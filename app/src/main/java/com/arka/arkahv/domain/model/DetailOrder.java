@@ -18,8 +18,8 @@ import static java.time.LocalDateTime.now;
 public class DetailOrder {
 
     private int id;
-    private Product product;
-    private Order order;
+    private int idProduct;
+    private int idOrder;
     private int number;
    // no se si son necesarias private LocalDateTime created_at;
     //private LocalDateTime updated_at;

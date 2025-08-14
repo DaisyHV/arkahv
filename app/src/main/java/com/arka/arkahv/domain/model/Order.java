@@ -17,6 +17,6 @@ public class Order {
     private int id;
     private double total;
     private Date date_order;
-    private User user;
+    //private User user;
     private List<DetailOrder> details_order;
 }

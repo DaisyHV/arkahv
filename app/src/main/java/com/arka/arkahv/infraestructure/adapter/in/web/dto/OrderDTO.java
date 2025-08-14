@@ -15,7 +15,7 @@ public class OrderDTO {
     private int id;
     private Date date_order;
     private double total;
-    private int user;
+    //private int user;
 
     private List<DetailOrderDTO> details;
 
