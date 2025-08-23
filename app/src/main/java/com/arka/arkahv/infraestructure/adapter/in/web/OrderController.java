@@ -34,7 +34,7 @@ public class OrderController {
     public ResponseEntity<List<OrderDTO>> getAllProducts(){
         List<Order> orders = orderUseCase.getAllOrders();
         List <OrderDTO> orderDTOS = orders.stream()
-                .map(orderWebMapper::orderToOrderDTO)
+                .map(factura -> orderWebMapper.orderToOrderDTO(factura))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
     }

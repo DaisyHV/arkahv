@@ -16,7 +16,8 @@ public class OrderApplicationService implements OrderUseCase {
 
     @Override
     public List<Order> getAllOrders() {
-        return orderRepositoryPort.findAll();
+        List<Order> orders = orderRepositoryPort.findAll();
+        return orders;
     }
 
     @Override
