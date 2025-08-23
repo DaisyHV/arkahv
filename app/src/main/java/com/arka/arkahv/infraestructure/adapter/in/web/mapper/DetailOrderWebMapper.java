@@ -13,8 +13,7 @@ import java.util.List;
 public interface DetailOrderWebMapper {
     DetailOrderWebMapper INSTANCE = Mappers.getMapper(DetailOrderWebMapper.class);
 
-    @Mapping(source="idProduct", target="product_id")
-    @Mapping(source="idOrder", target="order_id")
+    @Mapping(source="product", target="product")
     @Mapping(source="number", target="numberProducts")
     //@Mapping(target = "order_id", ignore = true)
     DetailOrderDTO detailOrderTodetailOrderDTO(DetailOrder detailOrder);

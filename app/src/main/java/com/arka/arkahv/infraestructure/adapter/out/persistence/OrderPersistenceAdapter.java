@@ -2,7 +2,6 @@ package com.arka.arkahv.infraestructure.adapter.out.persistence;
 
 import com.arka.arkahv.domain.model.DetailOrder;
 import com.arka.arkahv.domain.model.Order;
-import com.arka.arkahv.domain.model.Product;
 import com.arka.arkahv.domain.port.out.OrderRepositoryPort;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.entity.DetailOrderEntity;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.entity.OrderEntity;
@@ -32,19 +31,13 @@ public class OrderPersistenceAdapter implements OrderRepositoryPort {
     @Override
     public List<Order> findAll() {
 
-        List<OrderEntity> orders = repository.findAll();
-        ObjectMapper mapper = new ObjectMapper();
-        try{
-            String json = mapper.writeValueAsString(orders);
-            log.info("Objeto en JSON: {}", json);
-        } catch (Exception e) {
-            log.error("Error al configurar ObjectMapper: {}", e.getMessage());
-        }
+        List<OrderEntity> orders = repository.findAllWithDetailsAndProducts();
+
 
 
         return  orders
                 .stream()
-                .map( factura -> orderMapper.orderEntityToOrder(factura))
+                .map( factura -> orderMapper.toDomain(factura))
                 .collect(Collectors.toList());
     }
 
@@ -55,11 +48,11 @@ public class OrderPersistenceAdapter implements OrderRepositoryPort {
 
     @Override
     public Order saveOrder(Order order) {
-        OrderEntity orderEntity = orderMapper.orderToOrderEntity(order);
+        OrderEntity orderEntity = orderMapper.toEntity(order);
         List<DetailOrderEntity> detalles = new ArrayList<>();
         for (DetailOrder detail : order.getDetails_order()) {
-            ProductEntity product = productRepository.findById(detail.getIdProduct())
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + detail.getIdProduct()));
+            ProductEntity product = productRepository.findById(detail.getProduct().getId())
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + detail.getProduct().getId()));
             DetailOrderEntity detailEntity = new DetailOrderEntity();
             detailEntity.setProduct(product);
             detailEntity.setNumber(detail.getNumber());
@@ -69,7 +62,7 @@ public class OrderPersistenceAdapter implements OrderRepositoryPort {
         }
         orderEntity.setDetails_order(detalles);
         OrderEntity savedEntity = repository.save(orderEntity);
-        return orderMapper.orderEntityToOrder(savedEntity);
+        return orderMapper.toDomain(savedEntity);
         /*
         OrderEntity entity = orderMapper.orderToOrderEntity(order);
 

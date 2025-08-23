@@ -17,8 +17,8 @@ public interface DetailorderMapper {
 
 
     @Mapping(source="number", target="number")
-    @Mapping(source="idProduct", target="product.id")
-    @Mapping(source="idOrder", target="order.id")
+    @Mapping(source="product.id", target="product.id")
+    @Mapping(source="order.id", target="order.id")
 
     DetailOrderEntity detailOrderTodetailOrderEntity(DetailOrder detailOrder);
 

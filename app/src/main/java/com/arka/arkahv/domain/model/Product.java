@@ -17,5 +17,5 @@ public class Product {
     private int stock;
     private double price;
     private Category category;
-    //--private List<DetailOrder> details_product;
+    private List<DetailOrder> details_product;
 }

@@ -12,13 +12,13 @@ import org.mapstruct.Mapping;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {DetailOrderWebMapper.class})
 public interface OrderWebMapper {
 
     @Mapping(source="date_order", target="date_order")
     @Mapping(source = "details_order", target = "details")
     OrderDTO orderToOrderDTO(Order order);
-
+    /*
     default List<DetailOrderDTO> mapDetalles(List<DetailOrder> detalles) {
         if (detalles == null) {
             return null;
@@ -27,7 +27,7 @@ public interface OrderWebMapper {
                 .map(detalle -> DetailOrderWebMapper.INSTANCE.detailOrderTodetailOrderDTO(detalle))
                 .collect(Collectors.toList());
     }
-
+*/
     //List<OrderDTO> ordersToOrdersDTO(List<Order> orders);
     //List<Order> ordersDTOToOrders(List<OrderDTO> ordersDTO);
     @InheritInverseConfiguration

@@ -45,10 +45,11 @@ public class OrderController {
         List<DetailOrder> detalles = new ArrayList<>();
 
         for(DetailOrderDTO doDTO : orderDTO.getDetails()){
-            Product product = productUseCase.getProductById(doDTO.getProduct_id());
+
+            Product product = productUseCase.getProductById(doDTO.getProduct().getId());
             DetailOrder detailOrder = new DetailOrder();
-            detailOrder.setIdOrder(order.getId());
-            detailOrder.setIdProduct(product.getId());
+            detailOrder.setProduct(product);
+            detailOrder.setOrder(order);
             detailOrder.setNumber(doDTO.getNumberProducts());
 
             detalles.add(detailOrder);

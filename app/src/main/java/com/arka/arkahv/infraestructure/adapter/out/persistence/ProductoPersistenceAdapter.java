@@ -21,14 +21,14 @@ public class ProductoPersistenceAdapter implements ProductRepositoryPort {
     @Override
     public List<Product> findAll() {
         return repository.findAll().stream()
-                .map(productMapper::productEntityToProduct)
+                .map(producto -> productMapper.toDomain(producto))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Product findById(int id) {
         if (repository.findById(id).isPresent()) {
-            return productMapper.productEntityToProduct(repository.findById(id).get());
+            return productMapper.toDomain(repository.findById(id).get());
         } else {
             return null;
         }
@@ -36,9 +36,9 @@ public class ProductoPersistenceAdapter implements ProductRepositoryPort {
 
     @Override
     public Product save(Product product) {
-        ProductEntity entity = productMapper.productToProductEntity(product);
+        ProductEntity entity = productMapper.toEntity(product);
         ProductEntity savedEntity = repository.save(entity);
-        return productMapper.productEntityToProduct(savedEntity);
+        return productMapper.toDomain(savedEntity);
 
     }
 
@@ -46,9 +46,9 @@ public class ProductoPersistenceAdapter implements ProductRepositoryPort {
     public Product update(Product product) {
         int id = product.getId();
         if(repository.findById(id).isPresent()){
-            ProductEntity entity = productMapper.productToProductEntity(product);
+            ProductEntity entity = productMapper.toEntity(product);
             ProductEntity updatedEntity = repository.save(entity);
-            return productMapper.productEntityToProduct(updatedEntity);
+            return productMapper.toDomain(updatedEntity);
         }
         return null;
     }
