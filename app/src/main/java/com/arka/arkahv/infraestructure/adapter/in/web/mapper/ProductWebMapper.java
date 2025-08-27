@@ -15,7 +15,7 @@ public interface ProductWebMapper {
 
 
     @Mapping(source="category.id", target="categoriaId")
-    @Mapping(source="description", target="name")
+    //@Mapping(source="description", target="name")
     ProductDTO productToProductDTO(Product product);
 
     List<ProductDTO> productsToProductDTOs(List<Product> products);
