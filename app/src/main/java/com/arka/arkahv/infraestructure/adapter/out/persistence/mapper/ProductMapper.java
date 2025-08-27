@@ -12,6 +12,7 @@ public class ProductMapper {
         entity.setId(product.getId());
         entity.setDescription(product.getDescription());
         entity.setPrice(product.getPrice());
+        entity.setStock(product.getStock());
         // No setear listas ni referencias inversas aquí
         return entity;
     }
@@ -22,7 +23,8 @@ public class ProductMapper {
         product.setId(entity.getId());
         product.setDescription(entity.getDescription());
         product.setPrice(entity.getPrice());
-        // No setear listas ni referencias inversas aquí
+        product.setStock(entity.getStock());
+        //product.setCategory(entity.getCategory() != null ? entity.getCategory().toDomain() : null)
         return product;
     }
 }

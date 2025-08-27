@@ -56,8 +56,8 @@ public class OrderController {
         }
 
         order.setDetails_order(detalles);
-        orderUseCase.createOrder(order);
-        return new ResponseEntity<>(orderWebMapper.orderToOrderDTO(order), HttpStatus.OK);
+        Order orderSaved = orderUseCase.createOrder(order);
+        return new ResponseEntity<>(orderWebMapper.orderToOrderDTO(orderSaved), HttpStatus.OK);
 
 
 
