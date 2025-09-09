@@ -12,3 +12,9 @@ plugins {
 
 rootProject.name = 'arkahv'
 include('app')
+
+include ('app:cotizador')
+include ('app:gestor-solicitudes')
+include ('app:eureka-server')
+include ('app:api-gateway')
+include ('app:hello-world-service')

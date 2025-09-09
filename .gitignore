@@ -23,7 +23,7 @@ Thumbs.db
 .idea/
 *.iml
 *.iws
-out/
+
 
 # Archivos del IDE - Eclipse
 .project
