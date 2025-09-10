@@ -32,6 +32,7 @@ public class CotizacionServiceImpl implements CotizacionService{
         Double total = calcularTotal(cotizacion.getProductos());
         cotizacionEntity.setId(cotizacion.getId());
         cotizacionEntity.setCliente(cotizacion.getCliente());
+        cotizacionEntity.setClienteId(cotizacion.getClienteId());
         cotizacionEntity.setFecha_solicitud(cotizacion.getFecha_solicitud());
         cotizacionEntity.setTotal(total);
         cotizacionEntity.setEstado(cotizacion.getEstado());

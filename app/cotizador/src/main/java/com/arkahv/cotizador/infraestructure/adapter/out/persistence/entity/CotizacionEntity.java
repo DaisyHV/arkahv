@@ -23,7 +23,8 @@ public class CotizacionEntity {
     private int id;
     private String cliente;
 
-    //private int clienteId;
+    @Column("clienteId")
+    private int clienteId;
 
     @Column("fechaSolicitud")
     private LocalDateTime fecha_solicitud;

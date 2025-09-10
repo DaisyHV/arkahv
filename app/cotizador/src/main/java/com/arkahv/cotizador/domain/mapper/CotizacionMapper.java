@@ -26,6 +26,7 @@ public class CotizacionMapper {
         return new Cotizacion(
                 cotizacionEntity.getId(),
                 cotizacionEntity.getCliente(),
+                cotizacionEntity.getClienteId(),
                 cotizacionEntity.getFecha_solicitud(),
                 productos,
                 cotizacionEntity.getEstado(),
@@ -37,6 +38,7 @@ public class CotizacionMapper {
         return new CotizacionEntity(
                 cotizacion.getId(),
                 cotizacion.getCliente(),
+                cotizacion.getClienteId(),
                 cotizacion.getFecha_solicitud(),
                 cotizacion.getEstado(),
                 cotizacion.getTotal()
