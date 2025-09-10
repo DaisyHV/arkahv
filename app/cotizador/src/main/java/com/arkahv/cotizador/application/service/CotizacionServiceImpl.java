@@ -29,10 +29,11 @@ public class CotizacionServiceImpl implements CotizacionService{
     @Override
     public Mono<Cotizacion> generarCotizacion(Cotizacion cotizacion) {
         CotizacionEntity cotizacionEntity = new CotizacionEntity();
+        Double total = calcularTotal(cotizacion.getProductos());
         cotizacionEntity.setId(cotizacion.getId());
         cotizacionEntity.setCliente(cotizacion.getCliente());
         cotizacionEntity.setFecha_solicitud(cotizacion.getFecha_solicitud());
-        cotizacionEntity.setTotal(cotizacion.getTotal());
+        cotizacionEntity.setTotal(total);
         cotizacionEntity.setEstado(cotizacion.getEstado());
 
         return cotizacionRepository.save(cotizacionEntity) // guarda la cotización primero
@@ -70,6 +71,13 @@ public class CotizacionServiceImpl implements CotizacionService{
 
         //hacer mapeo de Cotizacion a CotizacionEntity mediante mapeo manual
     }
+
+    public Double calcularTotal(List<Producto> productos) {
+        return productos.stream()
+                .mapToDouble(p -> p.getPrecio() * p.getCantidad())
+                .sum();
+    }
+
 
     public Mono<CotizacionEntity> obtenerPorId(Integer id) {
         return cotizacionRepository.findById(id);

@@ -13,6 +13,7 @@ import java.util.List;
 public class Cotizacion {
     private int id;
     private String cliente;
+    //private int clienteId;
     private LocalDateTime fecha_solicitud;
     private List<Producto> productos;
     private String estado;
