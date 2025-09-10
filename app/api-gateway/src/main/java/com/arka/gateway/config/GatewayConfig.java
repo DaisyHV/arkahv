@@ -21,13 +21,13 @@ public class GatewayConfig {
             .route("cotizador", r -> r
                 .path("/api/cotizador/**")
                 .filters(f -> f.stripPrefix(2))
-                .uri("lb://arca-cotizador")
+                .uri("lb://cotizador")
             )
             // Gestor Solicitudes Service routes
             .route("gestor-solicitudes", r -> r
                 .path("/api/gestor/**")
                 .filters(f -> f.stripPrefix(2))
-                .uri("lb://arca-gestor-solicitudes")
+                .uri("lb://gestor-solicitudes")
             )
             // Eureka Dashboard route
             .route("eureka", r -> r

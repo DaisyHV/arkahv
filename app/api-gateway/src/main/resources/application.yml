@@ -18,7 +18,7 @@ spring:
           filters:
             - StripPrefix=2
             
-        - id: gestor-solicitudes-service
+        - id: gestor-solicitudes
           uri: lb://gestor-solicitudes
           predicates:
             - Path=/api/gestor/**
