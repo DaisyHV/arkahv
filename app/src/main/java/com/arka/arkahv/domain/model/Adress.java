@@ -1,7 +1,5 @@
 package com.arka.arkahv.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +15,5 @@ public class Adress {
     private String number;
     private String complement;
     private String city;
-    private User user;
+    private Customer customer;
 }

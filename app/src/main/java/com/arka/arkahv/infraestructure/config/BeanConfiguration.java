@@ -3,12 +3,15 @@ package com.arka.arkahv.infraestructure.config;
 import com.arka.arkahv.application.usecase.CategoryApplicationService;
 import com.arka.arkahv.application.usecase.OrderApplicationService;
 import com.arka.arkahv.application.usecase.ProductApplicationService;
+import com.arka.arkahv.application.usecase.UserApplicationService;
 import com.arka.arkahv.domain.port.in.CategoryUseCase;
 import com.arka.arkahv.domain.port.in.OrderUseCase;
 import com.arka.arkahv.domain.port.in.ProductUseCase;
+import com.arka.arkahv.domain.port.in.UserUseCase;
 import com.arka.arkahv.domain.port.out.CategoryRepositoryPort;
 import com.arka.arkahv.domain.port.out.OrderRepositoryPort;
 import com.arka.arkahv.domain.port.out.ProductRepositoryPort;
+import com.arka.arkahv.domain.port.out.UserRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,6 +28,10 @@ public class BeanConfiguration {
     @Bean
     public OrderUseCase orderUseCase(OrderRepositoryPort orderRepository) {
         return new OrderApplicationService(orderRepository);
+    }
+    @Bean
+    public UserUseCase UserUseCase(UserRepositoryPort userRepository) {
+        return new UserApplicationService(userRepository);
     }
 
 }
