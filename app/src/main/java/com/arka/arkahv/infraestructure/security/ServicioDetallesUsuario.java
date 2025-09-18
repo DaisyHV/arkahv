@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServicioDetallesUsuario implements UserDetailsService {
 
-    private UserPersistenceAdapter servicioUsuario;
+    private final UserPersistenceAdapter servicioUsuario;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = servicioUsuario.userByEmail(username);

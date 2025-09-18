@@ -1,6 +1,7 @@
 package com.arka.arkahv.infraestructure.config;
 
 import com.arka.arkahv.infraestructure.security.DetallesUsuario;
+import com.arka.arkahv.infraestructure.security.JwtFiltroPeticion;
 import com.arka.arkahv.infraestructure.security.ServicioDetallesUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.WebApplicationContext;
 
 @Configuration
@@ -39,20 +42,19 @@ public class ConfigSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .requestMatchers(
-                        "/auth/usuarios", "/auth/usuarios/inicioSesion", "/auth/usuarios/registro",
-                        "/cotizaciones/**").permitAll()
+                        "/auth/usuarios", "/auth/usuarios/inicioSesion", "/auth/usuarios/registro").permitAll()
                 .anyRequest().authenticated();
         http.sessionManagement(
                 sessionAuthenticationStrategy ->
                         sessionAuthenticationStrategy.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
-        http.csrf((csrf) -> csrf.disable()); //Cross-Site Request Forgery (CSRF) is an attack that forces authenticated users to submit a request to a Web application against which they are currently authenticated.
-
-        //Pendiente filtro con JWT Token
-
-        //http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class); //Se agrega hasta el login
-
+        http.csrf((csrf) -> csrf.disable());
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+    @Bean
+    public JwtFiltroPeticion authenticationJwtTokenFilter() {
+        return new JwtFiltroPeticion();
     }
 
     @Bean

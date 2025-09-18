@@ -1,12 +1,11 @@
 package com.arka.arkahv.infraestructure.adapter.in.web;
 
+import com.arka.arkahv.domain.model.SolicitudDeInicioDeSesion;
 import com.arka.arkahv.domain.model.User;
 import com.arka.arkahv.domain.port.in.UserUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth/usuarios")
@@ -19,4 +18,17 @@ public class UserController {
     public User crearUsuario(@RequestBody User objetoUsuario) {
         return userUseCase.createUser(objetoUsuario);
     }
+
+    @PostMapping("/inicioSesion")
+    public ResponseEntity<?> inicioSesion(@RequestBody SolicitudDeInicioDeSesion solicitudInicio) {
+        return userUseCase.inicioSesion(solicitudInicio);
+    }
+
+    @GetMapping("/prueba")
+    public ResponseEntity<?> obtenerUsuarioAutenticado() {
+        return userUseCase.obtenerUsuarioAutenticado();
+    }
+
+
 }
+
