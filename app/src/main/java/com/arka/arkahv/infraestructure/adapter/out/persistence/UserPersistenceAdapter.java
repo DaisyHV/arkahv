@@ -1,8 +1,6 @@
 package com.arka.arkahv.infraestructure.adapter.out.persistence;
 
-import com.arka.arkahv.domain.model.RespuestaDeInicioDeSesion;
-import com.arka.arkahv.domain.model.SolicitudDeInicioDeSesion;
-import com.arka.arkahv.domain.model.User;
+import com.arka.arkahv.domain.model.*;
 import com.arka.arkahv.domain.port.out.UserRepositoryPort;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.entity.UserEntity;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.mapper.UserMapper;
@@ -11,6 +9,7 @@ import com.arka.arkahv.infraestructure.security.DetallesUsuario;
 import com.arka.arkahv.infraestructure.security.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +31,7 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
     private final JWTUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     private DetallesUsuario detallesUsuario;
+    private RefreshTokenAdapter refreshTokenAdapter;
 
     @Autowired
     public UserPersistenceAdapter(UserRepository repository,
@@ -39,13 +39,16 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
                            UserMapper mapper,
                            JWTUtils jwtUtils,
                            @Lazy AuthenticationManager authenticationManager,
-                           @Lazy DetallesUsuario detallesUsuario) {
+                           @Lazy DetallesUsuario detallesUsuario,
+                                  RefreshTokenAdapter refreshTokenAdapter) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.mapper = mapper;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
-        this.detallesUsuario = detallesUsuario;}
+        this.detallesUsuario = detallesUsuario;
+        this.refreshTokenAdapter = refreshTokenAdapter;
+    }
 
     @Override
     public User userByEmail(String email) {
@@ -76,9 +79,10 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             detallesUsuario = (DetallesUsuario) authentication.getPrincipal();
             final String JWT = jwtUtils.generateJwtToken(detallesUsuario);
-            return ResponseEntity.ok(new RespuestaDeInicioDeSesion(JWT));
+            RefreshToken refreshToken = refreshTokenAdapter.crearRefreshToken(detallesUsuario.getUser().getId());
+            return  ResponseEntity.ok(new RespuestaDeInicioDeSesion(JWT, refreshToken.getToken(), solicitudInicio.getEmail()));
         } catch (Exception e) {
-            return ResponseEntity.ok(new RespuestaDeInicioDeSesion("Error : usuario o contraseña errónea"));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error : usuario o contraseña errónea");
         }
     }
 
@@ -87,4 +91,26 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
         DetallesUsuario detallesUsuario=(DetallesUsuario)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(detallesUsuario.getUsername());
     }
-}
+
+    @Override
+    public ResponseEntity<?> refreshToken(SolicitudRefreshToken solicitudRefresh){
+        String requestRefreshToken = solicitudRefresh.getRefreshToken();
+
+        //Verificamos si existe el token
+        if(refreshTokenAdapter.encontrarToken(requestRefreshToken).isPresent()) {
+            RefreshToken rt = refreshTokenAdapter.encontrarToken(requestRefreshToken).get();
+
+            //Verificamos si sigue vigente
+            if(refreshTokenAdapter.verificarExpiracion(rt)) {
+
+                User usuario = rt.getUsuario();
+                String token = jwtUtils.generateTokenFromUsername(usuario.getEmailAddress());
+                return ResponseEntity.ok(new RespuestaRefreshToken(token, requestRefreshToken));
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Refresh Token expirado");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Refresh Token no encontrado en Base de Datos");
+
+        }
+}}

@@ -1,6 +1,7 @@
 package com.arka.arkahv.infraestructure.adapter.in.web;
 
 import com.arka.arkahv.domain.model.SolicitudDeInicioDeSesion;
+import com.arka.arkahv.domain.model.SolicitudRefreshToken;
 import com.arka.arkahv.domain.model.User;
 import com.arka.arkahv.domain.port.in.UserUseCase;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,11 @@ public class UserController {
     @GetMapping("/prueba")
     public ResponseEntity<?> obtenerUsuarioAutenticado() {
         return userUseCase.obtenerUsuarioAutenticado();
+    }
+
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@RequestBody SolicitudRefreshToken solicitudRefresh) {
+        return userUseCase.refreshToken(solicitudRefresh);
     }
 
 

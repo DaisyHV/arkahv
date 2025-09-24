@@ -1,6 +1,7 @@
 package com.arka.arkahv.application.usecase;
 
 import com.arka.arkahv.domain.model.SolicitudDeInicioDeSesion;
+import com.arka.arkahv.domain.model.SolicitudRefreshToken;
 import com.arka.arkahv.domain.model.User;
 import com.arka.arkahv.domain.port.in.UserUseCase;
 import com.arka.arkahv.domain.port.out.ProductRepositoryPort;
@@ -31,6 +32,11 @@ public class UserApplicationService implements UserUseCase {
     @Override
     public ResponseEntity<?> obtenerUsuarioAutenticado() {
         return userRepositoryPort.obtenerUsuarioAutenticado();
+    }
+
+    @Override
+    public ResponseEntity<?> refreshToken(SolicitudRefreshToken solicitudRefresh){
+        return userRepositoryPort.refreshToken(solicitudRefresh);
     }
 
 }

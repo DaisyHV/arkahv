@@ -42,7 +42,7 @@ public class ConfigSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .requestMatchers(
-                        "/auth/usuarios", "/auth/usuarios/inicioSesion", "/auth/usuarios/registro").permitAll()
+                        "/auth/usuarios", "/auth/usuarios/inicioSesion", "/auth/usuarios/registro" , "/auth/usuarios/refreshtoken").permitAll()
                 .anyRequest().authenticated();
         http.sessionManagement(
                 sessionAuthenticationStrategy ->
