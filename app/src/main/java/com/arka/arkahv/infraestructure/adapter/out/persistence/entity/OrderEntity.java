@@ -1,5 +1,6 @@
 package com.arka.arkahv.infraestructure.adapter.out.persistence.entity;
 
+import com.arka.arkahv.domain.model.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -38,7 +39,10 @@ public class OrderEntity {
 
         private List<DetailOrderEntity> details_order;
 
-
+        @ManyToOne
+        @JoinColumn(name = "id_customer")
+        //@JsonIgnore
+        private CustomerEntity customer;
 
 
     }

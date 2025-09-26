@@ -1,12 +1,16 @@
 package com.arka.arkahv.infraestructure.adapter.out.persistence;
 
+import com.arka.arkahv.domain.model.Customer;
 import com.arka.arkahv.domain.model.DetailOrder;
 import com.arka.arkahv.domain.model.Order;
 import com.arka.arkahv.domain.port.out.OrderRepositoryPort;
+import com.arka.arkahv.infraestructure.adapter.out.persistence.entity.CustomerEntity;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.entity.DetailOrderEntity;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.entity.OrderEntity;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.entity.ProductEntity;
+import com.arka.arkahv.infraestructure.adapter.out.persistence.mapper.CustomerMapper;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.mapper.OrderMapper;
+import com.arka.arkahv.infraestructure.adapter.out.persistence.repository.CustomerJpaRepository;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.repository.OrderJpaRepository;
 import com.arka.arkahv.infraestructure.adapter.out.persistence.repository.ProductJpaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +30,9 @@ public class OrderPersistenceAdapter implements OrderRepositoryPort {
 
     private final OrderJpaRepository repository;
     private final ProductJpaRepository productRepository;
+    private final CustomerJpaRepository customerRepository;
     private final OrderMapper orderMapper;
+    private final CustomerMapper customerMapper;
 
     @Override
     public List<Order> findAll() {
@@ -48,7 +54,11 @@ public class OrderPersistenceAdapter implements OrderRepositoryPort {
 
     @Override
     public Order saveOrder(Order order) {
-        OrderEntity orderEntity = orderMapper.toEntity(order);
+        CustomerEntity customerEntity = customerRepository.findById(order.getCustomer())
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado: " + order.getCustomer()));
+
+        Customer customer = customerMapper.customerEntityToCustomer(customerEntity);
+        OrderEntity orderEntity = orderMapper.toEntity(order, customer);
         List<DetailOrderEntity> detalles = new ArrayList<>();
         for (DetailOrder detail : order.getDetails_order()) {
             ProductEntity product = productRepository.findById(detail.getProduct().getId())
