@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +29,10 @@ public class JWTUtils {
     }
 
     public String generateJwtToken(DetallesUsuario detallesUsuario) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("rol", "ROLE_" + detallesUsuario.getUser().getRole());
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(detallesUsuario.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
@@ -72,6 +77,21 @@ public class JWTUtils {
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(getSigningKey())  // Nueva forma de firmar
                 .compact();
+    }
+
+    public String getRoleFromJwtToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            return claims.get("rol", String.class); // devuelve "ROLE_USER", etc.
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error al obtener rol del JWT: " + e.getMessage());
+            return null;
+        }
     }
 
 }

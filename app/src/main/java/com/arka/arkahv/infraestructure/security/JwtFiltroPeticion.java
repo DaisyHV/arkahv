@@ -40,6 +40,7 @@ public class JwtFiltroPeticion extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
+
                 UserDetails detallesUsuario = this.servicioDetallesUsuario.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         detallesUsuario, null, detallesUsuario.getAuthorities());

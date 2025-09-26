@@ -20,5 +20,8 @@ public class User {
 
     private String password;
 
+    // adicional seguridad rol
+    private String role;
+
     //Constructores, Getters y Setters
 }

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -43,6 +44,11 @@ public class ConfigSecurity {
         http.authorizeRequests()
                 .requestMatchers(
                         "/auth/usuarios", "/auth/usuarios/inicioSesion", "/auth/usuarios/registro" , "/auth/usuarios/refreshtoken").permitAll()
+
+                .requestMatchers(HttpMethod.GET,  "/arka/products").hasRole("CUSTOMER")
+                .requestMatchers(HttpMethod.GET, "/arka/orders").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/arka/products").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/arka/orders").hasRole("CUSTOMER")
                 .anyRequest().authenticated();
         http.sessionManagement(
                 sessionAuthenticationStrategy ->

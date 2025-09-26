@@ -26,5 +26,8 @@ public class UserEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+
+    private String role;
+
     //Constructores, Getters y Setters
 }
