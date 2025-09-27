@@ -4,10 +4,8 @@ import arka.gestor_solicitudes.application.service.SolicitudCotizacionService;
 import arka.gestor_solicitudes.application.service.SolicitudCotizacionServiceImpl;
 import arka.gestor_solicitudes.domain.model.SolicitudCotizacion;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -20,5 +18,10 @@ public class SolicitudCotizacionController {
     @GetMapping("/{id}")
     public Mono<SolicitudCotizacion> obtener(@PathVariable Integer id) {
         return service.obtenerCotizacion(id);
+    }
+
+    @GetMapping("/generarOrden/{id}")
+    public Mono<String> generarOrden(@PathVariable Integer id, @RequestHeader("Authorization") String authorizationHeader) {
+        return service.generarOrdenEfectuada(id, authorizationHeader);
     }
 }

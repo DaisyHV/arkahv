@@ -16,6 +16,11 @@ public class SolicitudCotizacionServiceImpl implements SolicitudCotizacionServic
         return adapter.obtenerCotizacion(cotizacionId);
     }
 
+    @Override
+    public Mono<String> generarOrdenEfectuada(Integer cotizacionId, String authorizationHeader) {
+        return adapter.generarOrdenEfectuada(cotizacionId, authorizationHeader);
+    }
+
 
 
 

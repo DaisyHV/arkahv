@@ -7,9 +7,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
     @Bean
-    public WebClient webClient() {
+    public WebClient webClientCotizador() {
         return WebClient.builder()
                 .baseUrl("http://localhost:8082")  // Aquí va la URL del Microservicio B
+                .build();
+    }
+
+    @Bean
+    public WebClient webClientArka() {
+        return WebClient.builder()
+                .baseUrl("http://localhost:8089")  // Aquí va la URL del Microservicio B
                 .build();
     }
 }

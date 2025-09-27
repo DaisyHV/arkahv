@@ -28,6 +28,7 @@ public class OrderMapper {
         OrderEntity entity = new OrderEntity();
         entity.setId(order.getId());
         entity.setDate_order(order.getDate_order());
+        entity.setTotal(order.getTotal());
         CustomerEntity customerEntity = customerMapper.customerToCustomerEntity(customer);
         entity.setCustomer(customerEntity);
         // Mapea los detalles, pero sin setear el campo order en cada detalle para evitar ciclos
