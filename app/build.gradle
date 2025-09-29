@@ -11,7 +11,10 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.6'
-    id 'war'
+   id 'war'
+}
+repositories {
+    mavenCentral()
 }
 
 group = 'com.arka'
@@ -90,8 +93,9 @@ dependencies {
 
 
     // Testing
-    //testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    //testRuntimeOnly 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'com.h2database:h2'
+    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner:4.0.1'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
