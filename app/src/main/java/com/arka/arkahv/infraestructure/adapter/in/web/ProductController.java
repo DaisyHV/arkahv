@@ -6,6 +6,9 @@ import com.arka.arkahv.domain.port.in.ProductUseCase;
 import com.arka.arkahv.domain.port.in.UploadProductImageUseCase;
 import com.arka.arkahv.infraestructure.adapter.in.web.dto.ProductDTO;
 import com.arka.arkahv.infraestructure.adapter.in.web.mapper.ProductWebMapper;
+import com.itextpdf.io.source.ByteArrayOutputStream;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.ByteArrayInputStream;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("arka/products")
@@ -110,8 +126,59 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/reporte")
+    public ResponseEntity<byte[]> generarPdfDesdeController() {
+        try {
+            /*
+            // Simulamos una lista de productos (puedes traerla de tu base)
+            List<Producto> productos = List.of(
+                    new Producto("Producto A", 100.0, 2),
+                    new Producto("Producto B", 50.0, 5),
+                    new Producto("Producto C", 200.0, 1)
+            );
+            */
+            List<Product> products = productUseCase.getAllProductsStock();
+            List <ProductDTO> productos = products.stream()
+                    .map(productWebMapper::productToProductDTO)
+                    .collect(Collectors.toList());
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            // Título
+            document.add(new Paragraph("REPORTE DE PRODUCTOS").setBold().setFontSize(16).setMarginBottom(20));
+
+            // Tabla con 3 columnas
+            Table table = new Table(3);
+            table.addHeaderCell("Nombre");
+            table.addHeaderCell("Precio");
+            table.addHeaderCell("Cantidad");
+
+            for (ProductDTO p : productos) {
+                table.addCell(p.getDescription());
+                table.addCell(String.valueOf(p.getPrice()));
+                table.addCell(String.valueOf(p.getStock()));
+            }
+
+            document.add(table);
+            document.close();
+
+            byte[] pdfBytes = out.toByteArray();
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=reporte_productos.pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(pdfBytes);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(("Error al generar el PDF: " + e.getMessage()).getBytes());
+        }
 
 
+    }
 
 
 }

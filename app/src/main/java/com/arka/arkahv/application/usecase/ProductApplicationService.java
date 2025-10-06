@@ -19,6 +19,11 @@ public class ProductApplicationService implements ProductUseCase {
     }
 
     @Override
+    public List<Product> getAllProductsStock() {
+        return productRepositoryPort.findAllStock();
+    }
+
+    @Override
     public Product getProductById(int id) {
         return productRepositoryPort.findById(id);
     }

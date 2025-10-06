@@ -22,6 +22,7 @@ public class SolicitudCotizacionController {
 
     @GetMapping("/generarOrden/{id}")
     public Mono<String> generarOrden(@PathVariable Integer id, @RequestHeader("Authorization") String authorizationHeader) {
+
         return service.generarOrdenEfectuada(id, authorizationHeader);
     }
 }

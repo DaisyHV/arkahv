@@ -9,6 +9,7 @@ import arka.gestor_solicitudes.domain.model.SolicitudCotizacion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -53,7 +54,7 @@ public class SolicitudCotizacionAdapter implements SolicitudCotizacionService {
         System.out.println(token);
         return webClientCotizador.get()
                 .uri("/cotizaciones/{id}", cotizacionId)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2wiOiJST0xFX0FETUlOIiwic3ViIjoiY2FtaWxvMUBlbWFpbC5jb20iLCJpYXQiOjE3NTg5NDc2NTYsImV4cCI6MTc1OTAzNDA1Nn0.8jl3r-VmTbl-ajUeXbcyewozbq7pZK8oxLi-HEZ1kDM")
+                .header(HttpHeaders.AUTHORIZATION, token)
                 .retrieve()
                 .bodyToMono(SolicitudCotizacion.class)
                 .map(cotizacion -> {
@@ -87,15 +88,15 @@ public class SolicitudCotizacionAdapter implements SolicitudCotizacionService {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
                         String jsonOrden = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(orden);
-                        System.out.println("📦 JSON final de la orden:");
+                        System.out.println(" JSON final de la orden:");
                         System.out.println(jsonOrden);
                     } catch (Exception e) {
-                        System.out.println("❌ Error al convertir orden a JSON: " + e.getMessage());
+                        System.out.println(" Error al convertir orden a JSON: " + e.getMessage());
                     }
                     // Hacer el POST y devolver el mensaje como Mono<String>
                     return webClientArka.post()
                             .uri("/arka/orders")
-                            .header(HttpHeaders.AUTHORIZATION,  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2wiOiJST0xFX0NVU1RPTUVSIiwic3ViIjoiY2FtaWxvQGVtYWlsLmNvbSIsImlhdCI6MTc1ODk0MzY3NiwiZXhwIjoxNzU5MDMwMDc2fQ.HGpsSF-qjDADo7ra8FkIc41wVz3B3GGP6oj-4z3BWSs" )
+                            .header(HttpHeaders.AUTHORIZATION, token)
                             .header(HttpHeaders.COOKIE, "JSESSIONID=73D6E720BECD8E98E6BCDCD25ADDEC4F")
                             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                             .bodyValue(orden)

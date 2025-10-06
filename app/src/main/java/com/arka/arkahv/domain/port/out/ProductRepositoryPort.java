@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface ProductRepositoryPort {
 
     List<Product> findAll();
+    List<Product> findAllStock();
     // Optional<Product> findById(int id); // Optional para evitar NullPointerException
     Product findById(int id);
     Product save(Product product);

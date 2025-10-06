@@ -17,6 +17,7 @@ public interface OrderWebMapper {
 
     @Mapping(source="date_order", target="date_order")
     @Mapping(source = "details_order", target = "details")
+    @Mapping(source = "total", target = "total")
     OrderDTO orderToOrderDTO(Order order);
     /*
     default List<DetailOrderDTO> mapDetalles(List<DetailOrder> detalles) {

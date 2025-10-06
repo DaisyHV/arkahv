@@ -56,6 +56,7 @@ public class OrderMapper {
         Order order = new Order();
         order.setId(entity.getId());
         order.setDate_order(entity.getDate_order());
+        order.setTotal(entity.getTotal());
         order.setCustomer(entity.getCustomer().getId());
         // Mapea los detalles, pero sin setear el campo order en cada detalle para evitar ciclos
         if (entity.getDetails_order() != null) {

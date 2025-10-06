@@ -9,14 +9,14 @@ public class WebClientConfig {
     @Bean
     public WebClient webClientCotizador() {
         return WebClient.builder()
-                .baseUrl("http://localhost:8082")  // Aquí va la URL del Microservicio B
+                .baseUrl("http://3.94.84.118:80")  // Aquí va la URL del Microservicio Cotizador
                 .build();
     }
 
     @Bean
     public WebClient webClientArka() {
         return WebClient.builder()
-                .baseUrl("http://localhost:8089")  // Aquí va la URL del Microservicio B
+                .baseUrl("http://3.89.55.92:80")  // Aquí va la URL del Microservicio ARKA
                 .build();
     }
 }

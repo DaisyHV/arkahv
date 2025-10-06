@@ -26,6 +26,13 @@ public class ProductoPersistenceAdapter implements ProductRepositoryPort {
     }
 
     @Override
+    public List<Product> findAllStock() {
+        return repository.findAllByOrderByStockAsc().stream().limit(5)
+                .map(producto -> productMapper.toDomain(producto))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Product findById(int id) {
         if (repository.findById(id).isPresent()) {
             return productMapper.toDomain(repository.findById(id).get());

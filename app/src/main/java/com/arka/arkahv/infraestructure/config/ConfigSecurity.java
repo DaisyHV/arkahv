@@ -43,12 +43,12 @@ public class ConfigSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .requestMatchers(
-                        "/auth/usuarios", "/auth/usuarios/inicioSesion", "/auth/usuarios/registro" , "/auth/usuarios/refreshtoken", "/api/templates/templates/**", "/api/templates/send-email-from-template/**", "/arka/products/products/image-upload/**").permitAll()
+                        "/auth/usuarios", "/auth/usuarios/inicioSesion", "/auth/usuarios/registro" , "/auth/usuarios/refreshtoken", "/api/templates/templates/**", "/api/templates/send-email-from-template/**", "/arka/products/products/image-upload/**","/arka/products/reporte", "/api/bff/comentarios/web/**", "/api/bff/comentarios/mobile/**").permitAll()
 
                 .requestMatchers(HttpMethod.GET,  "/arka/products").hasRole("CUSTOMER")
                 .requestMatchers(HttpMethod.GET, "/arka/orders").hasRole("ADMIN")
                 //.requestMatchers(HttpMethod.POST, "/arka/products").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/arka/orders").hasRole("CUSTOMER")
+                .requestMatchers(HttpMethod.POST, "/arka/orders").hasRole("ADMIN")
                 .anyRequest().authenticated();
         http.sessionManagement(
                 sessionAuthenticationStrategy ->

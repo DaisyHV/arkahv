@@ -7,6 +7,7 @@ import java.util.List;
 public interface ProductUseCase {
 
     List<Product> getAllProducts();
+    List<Product> getAllProductsStock();
     Product getProductById(int id);
     Product createProduct(Product product);
     Product updateProduct(Product product);
