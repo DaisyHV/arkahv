@@ -17,14 +17,14 @@ import java.util.List;
 public class ComentarioBffController {
     private final ComentarioUseCase comentarioUseCase;
 
-    // ✅ Endpoint para cliente web: obtener todos los comentarios
+
     @GetMapping("/web/{productoId}")
     public ResponseEntity<List<Comentario>> obtenerComentariosWeb(@PathVariable String productoId) {
         List<Comentario> comentarios = comentarioUseCase.obtenerComentariosPorProducto10(productoId);
         return ResponseEntity.ok(comentarios);
     }
 
-    // ✅ Endpoint para cliente web: obtener todos los comentarios
+
     @GetMapping("/mobile/{productoId}")
     public ResponseEntity<List<Comentario>> obtenerComentariosMobile(@PathVariable String productoId) {
         List<Comentario> comentarios = comentarioUseCase.obtenerComentariosPorProducto5(productoId);
