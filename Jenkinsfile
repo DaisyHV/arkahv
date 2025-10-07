@@ -33,7 +33,7 @@ pipeline {
                     pkill -f $APP_NAME || true
 
                     echo " Iniciando aplicación en puerto $PORT..."
-                    nohup java -jar $APP_NAME --server.port=$PORT > $LOG_FILE 2>&1 &
+                    nohup java -jar $APP_NAME --server.port=$PORT &
                 '''
             }
         }
