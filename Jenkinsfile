@@ -29,11 +29,7 @@ pipeline {
                 sh '''
                     cd $WORKSPACE/$APP_DIR
 
-                    echo "Deteniendo instancias previas..."
-                    pkill -f $APP_NAME || true
-
-                    echo " Iniciando aplicación en puerto $PORT..."
-                    nohup java -jar $APP_NAME --server.port=$PORT &
+                    java -jar cotizador-0.0.1-SNAPSHOT.jar --server.port=8085
                 '''
             }
         }
